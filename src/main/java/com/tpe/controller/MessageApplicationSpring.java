@@ -3,6 +3,7 @@ package com.tpe.controller;
 import com.tpe.AppConfiguration;
 import com.tpe.domain.Message;
 import com.tpe.service.MessageService;
+import com.tpe.service.SlackService;
 import com.tpe.service.SmsService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -19,14 +20,14 @@ public class MessageApplicationSpring {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
 
         //mesajımızı SmsService ile göndermek istiyoruz.
-        //MessageService service=context.getBean(SmsService.class);//newlemedik rica ettik :)
-        //service.sendMessage(message);
+        MessageService service=context.getBean(SmsService.class);//newlemedik rica ettik :)
+        service.sendMessage(message);
 
-//        MessageService service2=context.getBean("smsService", MessageService.class);
-//        service2.sendMessage(message);
+        MessageService service2=context.getBean("smsService", MessageService.class);
+        service2.sendMessage(message);
 
         //mesajımızı SlackService ile gönderelim.
-       // MessageService service3 = context.getBean(SlcakService.class);
+//        MessageService service3 = context.getBean(SlackService.class);
         MessageService service3 = context.getBean("slack_service", MessageService.class);
         //getbean metoduna paramtre olarak parenti verirsek ve birden fazla childi varsa
         //beanin ismini de belirtmeliyiz.
@@ -56,8 +57,8 @@ public class MessageApplicationSpring {
 
         //random bir değer yazdıralım
         //Random random = new Random();
-        Random random = context.getBean(Random.class);
-        System.out.println(random.nextInt(100));
+//        Random random = context.getBean(Random.class);
+//        System.out.println(random.nextInt(100));
 
         //context objemiz varsa beani getBean ile isteyip kullanabiliriz
         //diğer classlarda ise enjekte ederek aynı beani kullanabiliriz
@@ -73,18 +74,31 @@ public class MessageApplicationSpring {
         //her istekte yeni bir bean üretilip gönderilir
         //beanin imhasından Spring SORUMLU DEĞİLDİR.
 
-        MessageService service6=context.getBean(SmsService.class);
-        MessageService service7=context.getBean(SmsService.class);
+//        MessageService service6=context.getBean(SmsService.class);
+//        MessageService service7=context.getBean(SmsService.class);
+//
+//        if (service6==service7){
+//            System.out.println("Aynı objeler");
+//            System.out.println(service6);
+//            System.out.println(service7);
+//        }else {
+//            System.out.println("Farklı objeler");
+//            System.out.println(service6);
+//            System.out.println(service7);
+//        }
 
-        if (service6==service7){
-            System.out.println("Aynı objeler");
-            System.out.println(service6);
-            System.out.println(service7);
-        }else {
-            System.out.println("Farklı objeler");
-            System.out.println(service6);
-            System.out.println(service7);
-        }
+        System.out.println("***********************");
+        SlackService service8 = context.getBean(SlackService.class);
+        service8.printContact();
+        System.out.println("***********************");
+
+        System.out.println("------------------------");
+        service8.getContact();
+        System.out.println("------------------");
+
+
+
+
 
         context.close();
 
